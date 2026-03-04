@@ -1,6 +1,27 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { Body, bodyRadius } from '@/lib/simulation';
 
+function hslToRgba(hsl: string, alpha: number): string {
+  const match = hsl.match(/hsl\((\d+),?\s*(\d+)%,?\s*(\d+)%/);
+  if (!match) return `rgba(100,100,255,${alpha})`;
+  const h = parseInt(match[1]) / 360;
+  const s = parseInt(match[2]) / 100;
+  const l = parseInt(match[3]) / 100;
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const r = Math.round(hue2rgb(p, q, h + 1/3) * 255);
+  const g = Math.round(hue2rgb(p, q, h) * 255);
+  const b = Math.round(hue2rgb(p, q, h - 1/3) * 255);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 interface Props {
   bodiesRef: React.MutableRefObject<Body[]>;
   isPaused: boolean;
@@ -39,7 +60,7 @@ const SimulationCanvas: React.FC<Props> = ({ bodiesRef, isPaused, stepFn }) => {
       if (body.trail.length < 2) continue;
       for (let i = 1; i < body.trail.length; i++) {
         const alpha = i / body.trail.length * 0.6;
-        ctx.strokeStyle = body.color.replace(')', ` / ${alpha})`).replace('hsl(', 'hsl(');
+        ctx.strokeStyle = hslToRgba(body.color, alpha);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(body.trail[i - 1].x, body.trail[i - 1].y);
@@ -54,8 +75,8 @@ const SimulationCanvas: React.FC<Props> = ({ bodiesRef, isPaused, stepFn }) => {
 
       // Glow
       const gradient = ctx.createRadialGradient(body.x, body.y, 0, body.x, body.y, r * 4);
-      gradient.addColorStop(0, body.color.replace(')', ' / 0.4)'));
-      gradient.addColorStop(1, 'transparent');
+      gradient.addColorStop(0, hslToRgba(body.color, 0.4));
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = gradient;
       ctx.beginPath();
       ctx.arc(body.x, body.y, r * 4, 0, Math.PI * 2);
