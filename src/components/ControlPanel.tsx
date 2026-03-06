@@ -31,9 +31,9 @@ interface Props {
 }
 
 const ControlPanel: React.FC<Props> = ({
-  bodies, isPaused, timeSpeed, gConstant, preset, collapsed,
+  bodies, isPaused, timeSpeed, gConstant, preset, collapsed, trailLength,
   onTogglePause, onReset, onTimeSpeedChange, onGConstantChange,
-  onPresetChange, onBodyChange, onBodyColorChange, onRemoveBody,
+  onPresetChange, onTrailLengthChange, onBodyChange, onBodyColorChange, onRemoveBody,
   onAddBody, onToggleCollapse, elapsedTime,
 }) => {
   if (collapsed) {
