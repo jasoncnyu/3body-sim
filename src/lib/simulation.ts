@@ -12,7 +12,11 @@ export interface Body {
   label: string;
 }
 
-const TRAIL_LENGTH = 200;
+let TRAIL_LENGTH = 200;
+
+export function setTrailLength(len: number) {
+  TRAIL_LENGTH = len;
+}
 const SOFTENING = 5;
 
 export function createBody(

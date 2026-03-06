@@ -118,6 +118,16 @@ const ControlPanel: React.FC<Props> = ({
                 className="mt-1"
               />
             </div>
+
+            <div>
+              <Label className="text-xs text-muted-foreground">Trail Length: {trailLength}</Label>
+              <Slider
+                value={[trailLength]}
+                onValueChange={([v]) => onTrailLengthChange(v)}
+                min={0} max={500} step={10}
+                className="mt-1"
+              />
+            </div>
           </div>
 
           {/* Body List */}
