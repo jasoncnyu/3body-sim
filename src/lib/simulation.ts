@@ -78,38 +78,7 @@ export function step(bodies: Body[], dt: number, G: number): Body[] {
       b.trail.shift();
     }
   }
-  // Collision detection & merge
-  const merged = new Set<string>();
-  const result: Body[] = [];
-  for (let i = 0; i < bodies.length; i++) {
-    if (merged.has(bodies[i].id)) continue;
-    let current = bodies[i];
-    for (let j = i + 1; j < bodies.length; j++) {
-      if (merged.has(bodies[j].id)) continue;
-      const other = bodies[j];
-      const dx = other.x - current.x;
-      const dy = other.y - current.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const r1 = bodyRadius(current.mass);
-      const r2 = bodyRadius(other.mass);
-      if (dist < r1 + r2) {
-        // Merge into current
-        const totalMass = current.mass + other.mass;
-        current = {
-          ...current,
-          x: (current.x * current.mass + other.x * other.mass) / totalMass,
-          y: (current.y * current.mass + other.y * other.mass) / totalMass,
-          vx: (current.vx * current.mass + other.vx * other.mass) / totalMass,
-          vy: (current.vy * current.mass + other.vy * other.mass) / totalMass,
-          mass: totalMass,
-          color: current.mass >= other.mass ? current.color : other.color,
-        };
-        merged.add(other.id);
-      }
-    }
-    result.push(current);
-  }
-  return result;
+  return bodies;
 }
 
 export function bodyRadius(mass: number): number {
