@@ -88,6 +88,7 @@ const Index = () => {
         isPaused={isPaused}
         timeSpeed={timeSpeed}
         gConstant={gConstant}
+        trailLength={trailLength}
         preset={preset}
         collapsed={collapsed}
         elapsedTime={elapsedTime}
