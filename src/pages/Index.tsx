@@ -9,6 +9,7 @@ const Index = () => {
   const [timeSpeed, setTimeSpeed] = useState(1);
   const [gConstant, setGConstant] = useState(5);
   const [collapsed, setCollapsed] = useState(false);
+  const [trailLength, setTrailLength_] = useState(200);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [bodiesSnapshot, setBodiesSnapshot] = useState<Body[]>(() => getPreset('three-body'));
 
