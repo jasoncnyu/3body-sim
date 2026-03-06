@@ -15,11 +15,13 @@ interface Props {
   gConstant: number;
   preset: string;
   collapsed: boolean;
+  trailLength: number;
   onTogglePause: () => void;
   onReset: () => void;
   onTimeSpeedChange: (v: number) => void;
   onGConstantChange: (v: number) => void;
   onPresetChange: (v: string) => void;
+  onTrailLengthChange: (v: number) => void;
   onBodyChange: (id: string, field: string, value: number) => void;
   onBodyColorChange: (id: string, color: string) => void;
   onRemoveBody: (id: string) => void;
