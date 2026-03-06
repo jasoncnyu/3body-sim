@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Body, step, getPreset, addNewBody, initAccelerations } from '@/lib/simulation';
+import { Body, step, getPreset, addNewBody, initAccelerations, setTrailLength } from '@/lib/simulation';
 import SimulationCanvas from '@/components/SimulationCanvas';
 import ControlPanel from '@/components/ControlPanel';
 
