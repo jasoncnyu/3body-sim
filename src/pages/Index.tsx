@@ -97,6 +97,7 @@ const Index = () => {
         onTimeSpeedChange={setTimeSpeed}
         onGConstantChange={setGConstant}
         onPresetChange={handlePresetChange}
+        onTrailLengthChange={(v) => { setTrailLength_(v); setTrailLength(v); }}
         onBodyChange={handleBodyChange}
         onBodyColorChange={handleBodyColorChange}
         onRemoveBody={handleRemoveBody}
