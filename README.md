@@ -48,3 +48,5 @@ src/
   pages/
     Index.tsx
 ```
+
+[Listed on LeanVibe](https://leanvibe.io/vibe/n-body-playground-mmgy4aly)

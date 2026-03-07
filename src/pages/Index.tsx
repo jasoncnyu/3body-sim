@@ -4,13 +4,15 @@ import SimulationCanvas from '@/components/SimulationCanvas';
 import ControlPanel from '@/components/ControlPanel';
 import EducationPanel from '@/components/EducationPanel';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Globe, Pause, Play, RotateCcw } from 'lucide-react';
+import { Github, Globe, Pause, Play, RotateCcw, ShieldCheck } from 'lucide-react';
 import { DEFAULT_LANG, detectPreferredLanguage, getLocalizedLanguageName, getPack, LangCode, LANGUAGE_OPTIONS, normalizeLangCode, PresetId, withLanguagePrefix } from '@/lib/i18n';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const TRAIL_MAX_SECONDS = 5 * 60;
 const TRAIL_SAMPLES_PER_SECOND = 60;
 const TRAIL_MAX_LENGTH = TRAIL_MAX_SECONDS * TRAIL_SAMPLES_PER_SECOND;
+const GITHUB_REPO_URL = "https://github.com/jasoncnyu/3body-sim";
+const LEANVIBE_URL = "https://leanvibe.io/vibe/n-body-playground-mmgy4aly";
 
 const Index = () => {
   const { lang: langParam } = useParams();
@@ -285,13 +287,34 @@ const Index = () => {
             )}
 
             {!isMobileGuideExpanded && (
-              <button
-                type="button"
-                onClick={() => setIsLanguageModalOpen(true)}
-                className="absolute bottom-[5.8rem] right-4 z-30 text-[10px] font-medium text-slate-300/45"
-              >
-                {currentLangLabel}
-              </button>
+              <div className="absolute bottom-[5.8rem] right-4 z-30 flex items-center gap-2">
+                <a
+                  href={LEANVIBE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-slate-300/45 hover:text-slate-200/70"
+                  aria-label="Listed on LeanVibe"
+                  title="Listed on LeanVibe"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href={GITHUB_REPO_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-slate-300/45 hover:text-slate-200/70"
+                  aria-label="GitHub repository"
+                >
+                  <Github className="h-3.5 w-3.5" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setIsLanguageModalOpen(true)}
+                  className="text-[10px] font-medium text-slate-300/45"
+                >
+                  {currentLangLabel}
+                </button>
+              </div>
             )}
 
             {isMobileGuideExpanded && (
@@ -308,14 +331,35 @@ const Index = () => {
         )}
 
         {!isMobile && (
-          <button
-            type="button"
-            onClick={() => setIsLanguageModalOpen(true)}
-            className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-lg border border-[#355271] bg-[#07122299] px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-[#10274399]"
-          >
-            <Globe className="h-3.5 w-3.5" />
-            {currentLangLabel}
-          </button>
+          <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2">
+            <a
+              href={LEANVIBE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center rounded-lg border border-[#355271] bg-[#07122299] p-2 text-slate-100 hover:bg-[#10274399]"
+              aria-label="Listed on LeanVibe"
+              title="Listed on LeanVibe"
+            >
+              <ShieldCheck className="h-3.5 w-3.5" />
+            </a>
+            <a
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center rounded-lg border border-[#355271] bg-[#07122299] p-2 text-slate-100 hover:bg-[#10274399]"
+              aria-label="GitHub repository"
+            >
+              <Github className="h-3.5 w-3.5" />
+            </a>
+            <button
+              type="button"
+              onClick={() => setIsLanguageModalOpen(true)}
+              className="flex items-center gap-1.5 rounded-lg border border-[#355271] bg-[#07122299] px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-[#10274399]"
+            >
+              <Globe className="h-3.5 w-3.5" />
+              {currentLangLabel}
+            </button>
+          </div>
         )}
       </div>
 
