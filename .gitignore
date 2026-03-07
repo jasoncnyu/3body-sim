@@ -7,9 +7,44 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
 node_modules
 dist
 dist-ssr
+coverage
+*.tsbuildinfo
+
+# Tool caches
+.cache
+.turbo
+.eslintcache
+.parcel-cache
+.vite
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Optional package manager artifacts
+.pnp.*
+
+# Test artifacts
+playwright-report/
+test-results/
+src/test/
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.ts
+src/**/*.spec.tsx
+
+# Temporary files
+tmp/
+temp/
 *.local
 
 # Editor directories and files
@@ -17,6 +52,7 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj

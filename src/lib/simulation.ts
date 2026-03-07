@@ -144,6 +144,37 @@ export function getPreset(name: string): Body[] {
         createBody(nextId(), 500, 80, 0, 0, -1.2, BODY_COLORS[1], 'Star B'),
         createBody(nextId(), 5, 300, 0, 0, -2.2, BODY_COLORS[0], 'Planet'),
       ];
+    case 'l4-l5': {
+      // Restricted 3-body style setup:
+      // two primaries in mutual orbit + one light body near triangular point.
+      const m1 = 1200;
+      const m2 = 12;
+      const separation = 260;
+      const r1 = (m2 / (m1 + m2)) * separation;
+      const r2 = (m1 / (m1 + m2)) * separation;
+      const omega = Math.sqrt((5 * (m1 + m2)) / Math.pow(separation, 3));
+      return [
+        createBody(nextId(), m1, -r1, 0, 0, -omega * r1, BODY_COLORS[2], 'Primary A'),
+        createBody(nextId(), m2, r2, 0, 0, omega * r2, BODY_COLORS[1], 'Primary B'),
+        createBody(
+          nextId(),
+          0.5,
+          separation / 2,
+          (Math.sqrt(3) / 2) * separation,
+          -omega * (Math.sqrt(3) / 2) * separation,
+          omega * (separation / 2),
+          BODY_COLORS[0],
+          'Trojan'
+        ),
+      ];
+    }
+    case 'hierarchical':
+      // Hierarchical triple: compact inner binary + distant third body.
+      return [
+        createBody(nextId(), 500, -45, 0, 0, -2.1, BODY_COLORS[2], 'Inner A'),
+        createBody(nextId(), 350, 65, 0, 0, 3.0, BODY_COLORS[1], 'Inner B'),
+        createBody(nextId(), 30, 0, 620, 1.3, 0, BODY_COLORS[0], 'Outer C'),
+      ];
     default:
       return getPreset('three-body');
   }

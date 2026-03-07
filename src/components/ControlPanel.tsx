@@ -7,15 +7,19 @@ import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Play, Pause, RotateCcw, Plus, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { getPack, LangCode, PresetId } from '@/lib/i18n';
 
 interface Props {
   bodies: Body[];
   isPaused: boolean;
   timeSpeed: number;
   gConstant: number;
-  preset: string;
+  preset: PresetId;
+  lang: LangCode;
   collapsed: boolean;
   trailLength: number;
+  trailMaxLength: number;
   onTogglePause: () => void;
   onReset: () => void;
   onTimeSpeedChange: (v: number) => void;
@@ -28,17 +32,24 @@ interface Props {
   onAddBody: () => void;
   onToggleCollapse: () => void;
   elapsedTime: number;
+  className?: string;
+  showHeader?: boolean;
+  showStats?: boolean;
+  showTransportControls?: boolean;
 }
 
 const ControlPanel: React.FC<Props> = ({
-  bodies, isPaused, timeSpeed, gConstant, preset, collapsed, trailLength,
+  bodies, isPaused, timeSpeed, gConstant, preset, lang, collapsed, trailLength, trailMaxLength,
   onTogglePause, onReset, onTimeSpeedChange, onGConstantChange,
   onPresetChange, onTrailLengthChange, onBodyChange, onBodyColorChange, onRemoveBody,
-  onAddBody, onToggleCollapse, elapsedTime,
+  onAddBody, onToggleCollapse, elapsedTime, className,
+  showHeader = true, showStats = true, showTransportControls = true,
 }) => {
+  const t = getPack(lang).strings;
+
   if (collapsed) {
     return (
-      <div className="h-full flex flex-col items-center py-4 bg-[#0a0a1a] border-r border-[#1a1a3a] w-12">
+      <div className={cn("h-full flex flex-col items-center py-4 bg-[#0a0a1a] border-r border-[#1a1a3a] w-12", className)}>
         <Button variant="ghost" size="icon" onClick={onToggleCollapse} className="text-muted-foreground hover:text-foreground">
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -55,52 +66,58 @@ const ControlPanel: React.FC<Props> = ({
   }
 
   return (
-    <div className="h-full flex flex-col bg-[#0a0a1a] border-r border-[#1a1a3a] w-80">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#1a1a3a]">
-        <h2 className="text-sm font-bold tracking-wider uppercase text-[hsl(200,90%,70%)]">N-Body Sim</h2>
-        <Button variant="ghost" size="icon" onClick={onToggleCollapse} className="text-muted-foreground hover:text-foreground">
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-      </div>
+    <div className={cn("h-full flex flex-col bg-[#0a0a1a] border-r border-[#1a1a3a] w-80", className)}>
+      {showHeader && (
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1a1a3a]">
+        <h2 className="text-sm font-bold tracking-wider uppercase text-[hsl(200,90%,70%)]">{t.appTitle}</h2>
+          <Button variant="ghost" size="icon" onClick={onToggleCollapse} className="text-muted-foreground hover:text-foreground">
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
 
-      {/* Stats */}
-      <div className="px-4 py-2 flex gap-4 text-xs text-muted-foreground border-b border-[#1a1a3a]">
-        <span>Bodies: <strong className="text-foreground">{bodies.length}</strong></span>
-        <span>Time: <strong className="text-foreground">{elapsedTime.toFixed(1)}s</strong></span>
-      </div>
+      {showStats && (
+        <div className="px-4 py-2 flex gap-4 text-xs text-muted-foreground border-b border-[#1a1a3a]">
+          <span>{t.bodies}: <strong className="text-foreground">{bodies.length}</strong></span>
+          <span>{t.time}: <strong className="text-foreground">{elapsedTime.toFixed(1)}s</strong></span>
+        </div>
+      )}
 
       <ScrollArea className="flex-1">
         <div className="p-4 space-y-5">
           {/* Global Controls */}
           <div className="space-y-3">
-            <div className="flex gap-2">
-              <Button size="sm" variant={isPaused ? 'default' : 'secondary'} onClick={onTogglePause} className="flex-1 gap-1">
-                {isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
-                {isPaused ? 'Play' : 'Pause'}
-              </Button>
-              <Button size="sm" variant="outline" onClick={onReset} className="gap-1">
-                <RotateCcw className="h-3 w-3" /> Reset
-              </Button>
-            </div>
+            {showTransportControls && (
+              <div className="flex gap-2">
+                <Button size="sm" variant={isPaused ? 'default' : 'secondary'} onClick={onTogglePause} className="flex-1 gap-1">
+                  {isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
+                  {isPaused ? t.play : t.pause}
+                </Button>
+                <Button size="sm" variant="outline" onClick={onReset} className="gap-1">
+                  <RotateCcw className="h-3 w-3" /> {t.reset}
+                </Button>
+              </div>
+            )}
 
             <div>
-              <Label className="text-xs text-muted-foreground">Preset</Label>
+              <Label className="text-xs text-muted-foreground">{t.preset}</Label>
               <Select value={preset} onValueChange={onPresetChange}>
                 <SelectTrigger className="h-8 mt-1 bg-[#0f0f25] border-[#1a1a3a]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="three-body">Three Body</SelectItem>
-                  <SelectItem value="figure-8">Figure-8</SelectItem>
-                  <SelectItem value="solar-system">Solar System</SelectItem>
-                  <SelectItem value="binary-star">Binary Star</SelectItem>
+                  <SelectItem value="three-body">{t.presetNames['three-body']}</SelectItem>
+                  <SelectItem value="figure-8">{t.presetNames['figure-8']}</SelectItem>
+                  <SelectItem value="solar-system">{t.presetNames['solar-system']}</SelectItem>
+                  <SelectItem value="binary-star">{t.presetNames['binary-star']}</SelectItem>
+                  <SelectItem value="l4-l5">{t.presetNames['l4-l5']}</SelectItem>
+                  <SelectItem value="hierarchical">{t.presetNames.hierarchical}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
-              <Label className="text-xs text-muted-foreground">Time Speed: {timeSpeed.toFixed(1)}x</Label>
+              <Label className="text-xs text-muted-foreground">{t.timeSpeed}: {timeSpeed.toFixed(1)}x</Label>
               <Slider
                 value={[timeSpeed]}
                 onValueChange={([v]) => onTimeSpeedChange(v)}
@@ -110,7 +127,7 @@ const ControlPanel: React.FC<Props> = ({
             </div>
 
             <div>
-              <Label className="text-xs text-muted-foreground">G Constant: {gConstant.toFixed(1)}</Label>
+              <Label className="text-xs text-muted-foreground">{t.gConstant}: {gConstant.toFixed(1)}</Label>
               <Slider
                 value={[gConstant]}
                 onValueChange={([v]) => onGConstantChange(v)}
@@ -120,22 +137,23 @@ const ControlPanel: React.FC<Props> = ({
             </div>
 
             <div>
-              <Label className="text-xs text-muted-foreground">Trail Length: {trailLength}</Label>
+              <Label className="text-xs text-muted-foreground">{t.trailLength}: {trailLength}</Label>
               <Slider
                 value={[trailLength]}
                 onValueChange={([v]) => onTrailLengthChange(v)}
-                min={0} max={500} step={10}
+                min={0} max={trailMaxLength} step={60}
                 className="mt-1"
               />
+              <p className="mt-1 text-[10px] leading-4 text-amber-300/90">{t.trailWarning}</p>
             </div>
           </div>
 
           {/* Body List */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">Bodies</Label>
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t.bodyList}</Label>
               <Button size="sm" variant="ghost" onClick={onAddBody} className="h-7 gap-1 text-xs text-[hsl(200,90%,70%)]">
-                <Plus className="h-3 w-3" /> Add
+                <Plus className="h-3 w-3" /> {t.add}
               </Button>
             </div>
 
@@ -157,11 +175,11 @@ const ControlPanel: React.FC<Props> = ({
                 </div>
 
                 <div className="grid grid-cols-3 gap-1.5">
-                  <FieldInput label="Mass" value={body.mass} onChange={(v) => onBodyChange(body.id, 'mass', v)} />
-                  <FieldInput label="X" value={body.x} onChange={(v) => onBodyChange(body.id, 'x', v)} />
-                  <FieldInput label="Y" value={body.y} onChange={(v) => onBodyChange(body.id, 'y', v)} />
-                  <FieldInput label="Vx" value={body.vx} onChange={(v) => onBodyChange(body.id, 'vx', v)} step={0.1} />
-                  <FieldInput label="Vy" value={body.vy} onChange={(v) => onBodyChange(body.id, 'vy', v)} step={0.1} />
+                  <FieldInput label={t.mass} value={body.mass} onChange={(v) => onBodyChange(body.id, 'mass', v)} />
+                  <FieldInput label={t.x} value={body.x} onChange={(v) => onBodyChange(body.id, 'x', v)} />
+                  <FieldInput label={t.y} value={body.y} onChange={(v) => onBodyChange(body.id, 'y', v)} />
+                  <FieldInput label={t.vx} value={body.vx} onChange={(v) => onBodyChange(body.id, 'vx', v)} step={0.1} />
+                  <FieldInput label={t.vy} value={body.vy} onChange={(v) => onBodyChange(body.id, 'vy', v)} step={0.1} />
                 </div>
               </div>
             ))}
