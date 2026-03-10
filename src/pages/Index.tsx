@@ -30,7 +30,7 @@ const Index = () => {
   const [isGuideOpen, setIsGuideOpen] = useState(true);
   const [isMobileControlsExpanded, setIsMobileControlsExpanded] = useState(false);
   const [isMobileGuideExpanded, setIsMobileGuideExpanded] = useState(false);
-  const [trailLength, setTrailLength_] = useState(200);
+  const [trailLength, setTrailLength_] = useState(1000);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [bodiesSnapshot, setBodiesSnapshot] = useState<Body[]>(() => getPreset('three-body'));
 
