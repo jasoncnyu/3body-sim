@@ -158,7 +158,7 @@ const ControlPanel: React.FC<Props> = ({
             </div>
 
             {bodies.map((body) => (
-              <div key={body.id} className="rounded-lg border border-[#1a1a3a] bg-[#0f0f25] p-3 space-y-2">
+              <div key={body.id} className="rounded-lg border border-[#1a1a3a] bg-[#0f0f25] p-3 space-y-2 text-slate-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <input
